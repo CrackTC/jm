@@ -1,0 +1,14 @@
+client:
+  impl: api
+  postman:
+    meta_data:
+      proxies: system
+download:
+  cache: true
+  image:
+    decode: true
+    suffix: .webp
+
+dir_rule:
+  base_dir: ./downloads
+  rule: Bd_Aid_Ptitle
