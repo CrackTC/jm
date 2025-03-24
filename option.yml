@@ -1,4 +1,5 @@
 client:
+  impl: html
   postman:
     meta_data:
       proxies: system
