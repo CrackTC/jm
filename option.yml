@@ -1,5 +1,7 @@
 client:
   impl: html
+  domain:
+    - 18comic.vip
   postman:
     meta_data:
       proxies: system
