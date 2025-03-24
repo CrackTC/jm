@@ -11,19 +11,22 @@ if not os.path.exists("./result"):
 
 
 def download(id):
-    jmcomic.download_album(id, option=option)
+    if not os.path.exists(f"./downloads/{id}"):
+        jmcomic.download_album(id, option=option)
     title = os.listdir(f"./downloads/{id}")[0]
-    subprocess.run(
-        [
-            "convert",
-            "-compress",
-            "jpeg",
-            "-quality",
-            "75",
-            f"./downloads/{id}/{title}/*.webp",
-            f"./result/{title}.pdf",
-        ]
-    )
+
+    if not os.path.exists(f"./result/{title}.pdf"):
+        subprocess.run(
+            [
+                "convert",
+                "-compress",
+                "jpeg",
+                "-quality",
+                "75",
+                f"./downloads/{id}/{title}/*.webp",
+                f"./result/{title}.pdf",
+            ]
+        )
     return f"/result/{quote_plus(title)}.pdf"
 
 
