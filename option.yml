@@ -13,4 +13,4 @@ download:
 
 dir_rule:
   base_dir: ./downloads
-  rule: Bd_Aid_Ptitle
+  rule: Bd_Aid_Pindex
