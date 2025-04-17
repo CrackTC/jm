@@ -46,7 +46,7 @@ def download(id, index):
     if not os.path.exists(pdf_path):
         write_img_to_pdf(images_dir, pdf_path)
 
-    return f"/result/jm_{id}_{index}.pdf"
+    return f"/result/jm_{id}_{index}.pdf,/preview/{id}/{index}/00001.webp"
 
 
 app = Flask(__name__)
@@ -69,6 +69,9 @@ def download_route():
     filepath = download(int(id), int(index))
     return filepath
 
+@app.get("/preview/<path:filename>")
+def preview_route(filename):
+    return send_from_directory("./downloads", filename, as_attachment=True)
 
 @app.get("/result/<path:filename>")
 def result_route(filename):
