@@ -4,11 +4,11 @@ import subprocess
 from flask import Flask, request, send_from_directory
 
 option = jmcomic.create_option_by_file("./option.yml")
-client = option.new_jm_client()
+html_client = option.new_jm_client(impl='html')
 
 
 def count(id):
-    album: jmcomic.JmAlbumDetail = client.get_album_detail(id)
+    album: jmcomic.JmAlbumDetail = html_client.get_album_detail(id)
     return len(album.episode_list)
 
 
@@ -32,7 +32,7 @@ def write_img_to_pdf(images_dir, pdf_path):
 def download(id, index):
     images_dir = f"./downloads/{id}/{index}"
     if not os.path.exists(images_dir):
-        album: jmcomic.JmAlbumDetail = client.get_album_detail(id)
+        album: jmcomic.JmAlbumDetail = html_client.get_album_detail(id)
         photo = album.create_photo_detail(index)
 
         # redirect
