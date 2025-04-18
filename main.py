@@ -74,9 +74,13 @@ def download_route():
     return filepath
 
 
-@app.get("/preview/<path:filename>")
-def preview_route(filename):
-    return send_from_directory("./downloads", filename, as_attachment=True)
+@app.get("/preview/<id>/<index>/<filename>")
+def preview_route(id, index, filename):
+    if not os.path.exists(f"./downloads/{id}/{index}"):
+        id = html_client.get_album_detail(id).album_id
+    return send_from_directory(
+        "./downloads", f"{id}/{index}/{filename}", as_attachment=True
+    )
 
 
 @app.get("/result/<path:filename>")
