@@ -1,14 +1,18 @@
 import jmcomic
+from jmcomic.jm_exception import MissingAlbumPhotoException
 import os
 import subprocess
 from flask import Flask, request, send_from_directory
 
 option = jmcomic.create_option_by_file("./option.yml")
-html_client = option.new_jm_client(impl='html')
+html_client = option.new_jm_client(impl="html")
 
 
 def count(id):
-    album: jmcomic.JmAlbumDetail = html_client.get_album_detail(id)
+    try:
+        album: jmcomic.JmAlbumDetail = html_client.get_album_detail(id)
+    except MissingAlbumPhotoException:
+        return -1
     return len(album.episode_list)
 
 
@@ -33,7 +37,7 @@ def download(id, index):
     images_dir = f"./downloads/{id}/{index}"
     if not os.path.exists(images_dir):
         album: jmcomic.JmAlbumDetail = html_client.get_album_detail(id)
-        photo = album.create_photo_detail(index)
+        photo = album.create_photo_detail(index - 1)
 
         # redirect
         id = album.album_id
@@ -69,9 +73,11 @@ def download_route():
     filepath = download(int(id), int(index))
     return filepath
 
+
 @app.get("/preview/<path:filename>")
 def preview_route(filename):
     return send_from_directory("./downloads", filename, as_attachment=True)
+
 
 @app.get("/result/<path:filename>")
 def result_route(filename):
